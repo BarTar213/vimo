@@ -2,8 +2,9 @@
   <div class="ma-2">
     <v-snackbar
       v-model="show"
+      timeout="2000"
       :color="color"
-      top
+      bottom
     >
       {{ message }}
 

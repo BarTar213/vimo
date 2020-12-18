@@ -15,7 +15,7 @@
             </div>
             <h2>Overview</h2>
             <h5>{{ movie.overview }}</h5>
-            <Rating :liked="false" :movie-id="movie.id" />
+            <Rating :liked="liked" :rating="movie.vote_average" @like="like" />
           </v-col>
         </v-row>
       </v-col>
@@ -36,16 +36,18 @@ export default {
   },
   async fetch () {
     this.movie = await this.getFromBackend(this.id)
+    this.liked = await this.checkLikedBackend(this.id)
   },
   data () {
     return {
       id: this.$route.params.id,
       movie: [],
-      imageURL: ''
+      imageURL: '',
+      liked: false
     }
   },
   methods: {
-    ...mapActions('movies', ['getFromBackend']),
+    ...mapActions('movies', ['getFromBackend', 'checkLikedBackend', 'likeMovieBackend']),
     toDate () {
       const date = new Date(Date.parse(this.movie.release_date))
       return date.toLocaleDateString()
@@ -66,6 +68,10 @@ export default {
         result += hours + 'h '
       }
       return result + minutes + 'm'
+    },
+    like () {
+      this.likeMovieBackend({ id: this.movie.id, beforeVal: this.liked })
+        .then(() => { this.liked = !(this.liked) })
     }
   }
 }

@@ -5,5 +5,9 @@ export const actions = {
 
   async likeMovieBackend ({ commit }, { id, beforeVal }) {
     return await this.$backend.movies.likeMovie(id, beforeVal)
+  },
+
+  async checkLikedBackend ({ commit }, id) {
+    return (await this.$backend.movies.checkLiked(id)).liked
   }
 }

@@ -3,15 +3,18 @@
     <v-icon x-large>
       mdi-star
     </v-icon>
-    {{}}
-    <v-icon x-large @click="like">
-      {{ hearIcon }}
-    </v-icon>
+    <h1>{{ rating }}</h1>
+    <v-btn
+      icon
+    >
+      <v-icon x-large @click="like">
+        {{ hearIcon }}
+      </v-icon>
+    </v-btn>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 
 export default {
   name: 'Rating',
@@ -20,7 +23,7 @@ export default {
       type: Boolean,
       default: false
     },
-    movieId: {
+    rating: {
       type: Number,
       default: 0
     }
@@ -30,17 +33,18 @@ export default {
       hearIcon: 'mdi-heart-outline'
     }
   },
+  watch: {
+    liked () {
+      if (this.liked) {
+        this.hearIcon = 'mdi-heart'
+      } else {
+        this.hearIcon = 'mdi-heart-outline'
+      }
+    }
+  },
   methods: {
-    ...mapActions('movies', ['likeMovieBackend']),
     like () {
-      this.likeMovieBackend({ id: this.movieId, beforeVal: this.liked }).then(function () {
-        this.liked = !this.liked
-        if (this.liked) {
-          this.hearIcon = 'mdi-heart'
-        } else {
-          this.hearIcon = 'mdi-heart-outline'
-        }
-      })
+      this.$emit('like')
     }
   }
 }
