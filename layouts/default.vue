@@ -2,6 +2,7 @@
   <v-app light>
     <Navigation />
     <AppBar />
+    <Snackbar />
     <v-main>
       <v-container>
         <nuxt />
@@ -19,11 +20,13 @@
 <script>
 import Navigation from '~/components/Navigation'
 import AppBar from '~/components/AppBar'
+import Snackbar from '~/components/Snackbar'
 
 export default {
   components: {
     AppBar,
-    Navigation
+    Navigation,
+    Snackbar
   },
   data () {
     return {

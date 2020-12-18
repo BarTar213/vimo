@@ -40,8 +40,6 @@ export default {
         } else {
           this.hearIcon = 'mdi-heart-outline'
         }
-      }).catch(function (response) {
-        console.log(response)
       })
     }
   }
