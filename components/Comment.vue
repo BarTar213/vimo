@@ -1,57 +1,65 @@
 <template>
   <div class="v-comment">
     <div class="v-comment-inner">
-      <div class="v-comment-avatar">
-        <img src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" alt="comment-avatar">
-      </div><div class="v-comment-content">
-        <div class="v-comment-content-author">
-          <span class="v-comment-content-author-name">Han Solo</span><span class="v-comment-content-author-time">a few seconds ago</span>
-        </div><div class="v-comment-content-detail">
-          gfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdggfdgdg
-        </div>
-      </div>
+      <v-avatar color="red" class="v-comment-avatar">
+        {{ comment.user_id }}
+      </v-avatar>
+      <v-row class="v-comment-content" justify="start" no-gutters>
+        <v-col cols="12" align-self="start">
+          <div class="v-comment-content-author">
+            <span class="v-comment-content-author-name">{{ comment.user_id }}</span><span
+              class="v-comment-content-author-time"
+            >{{ comment.create_date }}</span>
+          </div>
+          <div class="v-comment-content-detail">
+            {{ comment.content }}
+          </div>
+          <CommentToolbar :liked="liked" :disliked="disliked" :likes="comment.likes" @like="like" />
+        </v-col>
+      </v-row>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import CommentToolbar from '@/components/CommentToolbar'
+
 export default {
-  name: 'Comment'
+  name: 'Comment',
+  components: { CommentToolbar },
+  props: {
+    comment: {
+      type: Object,
+      default () {
+        return []
+      }
+    },
+    liked: {
+      type: Boolean,
+      default: false
+    },
+    disliked: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    ...mapActions('comments', ['likeCommentBackend']),
+    like () {
+      this.likeCommentBackend({
+        id: this.comment.id,
+        beforeVal: this.liked
+      })
+        .then(() => {
+          this.liked = !(this.liked)
+        })
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
-/*.v-comment{*/
-/*  display: flex;*/
-/*  padding-top: 16px;*/
-/*  padding-bottom: 16px;*/
-/*}*/
-/*.v-comment-avatar{*/
-/*  position: relative;*/
-/*  flex-shrink: 0;*/
-/*  margin-right: 12px;*/
-/*  cursor: pointer;*/
-/*}*/
-/*.v-comment-content{*/
-/*  position: relative;*/
-/*  flex: 1 1 auto;*/
-/*  min-width: 1px;*/
-/*  font-size: 14px;*/
-/*}*/
-
-/*.v-comment-content-author{*/
-/*  display: flex;*/
-/*  flex-wrap: wrap;*/
-/*  justify-content: flex-start;*/
-/*  margin-bottom: 4px;*/
-/*  font-size: 14px;*/
-/*}*/
-
-/*.v-comment-content-author {*/
-/*  padding-right: 8px;*/
-/*  font-size: 12px;*/
-/*  line-height: 18px;*/
-/*}*/
 
 .v-comment {
   position: relative;
@@ -66,7 +74,7 @@ export default {
   &-avatar {
     position: relative;
     flex-shrink: 0;
-    margin-right: 12px;
+    margin-right: 14px;
     cursor: pointer;
 
     img {

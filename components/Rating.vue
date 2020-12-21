@@ -82,11 +82,14 @@ export default {
     }
   },
   watch: {
-    liked () {
-      if (this.liked) {
-        this.hearIcon = 'mdi-heart'
-      } else {
-        this.hearIcon = 'mdi-heart-outline'
+    liked: {
+      immediate: true,
+      handler () {
+        if (this.liked) {
+          this.hearIcon = 'mdi-heart'
+        } else {
+          this.hearIcon = 'mdi-heart-outline'
+        }
       }
     }
   },

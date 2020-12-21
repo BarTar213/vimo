@@ -2,40 +2,41 @@
   <v-list three-line>
     <template v-for="(comment, index) in comments">
       <v-divider
-        v-if="comment.divider"
         :key="index"
-        :inset="comment.inset"
+        :inset="true"
       />
-
       <v-list-item
-        v-else
-        :key="comment.title"
+        :key="comment.id"
       >
-        <v-list-item-avatar>
-          {{ getInitials(comment.name) }}
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title v-html="comment.title" />
-          <v-list-item-subtitle v-html="comment.subtitle" />
-        </v-list-item-content>
+        <Comment :comment="comment" />
       </v-list-item>
     </template>
   </v-list>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import Comment from '@/components/Comment'
+
 export default {
   name: 'CommentList',
+  components: { Comment },
   props: {
-    comments: {
-      type: Array,
-      default () {
-        return []
-      }
+    movieId: {
+      type: Number,
+      default: 0
+    }
+  },
+  async fetch () {
+    this.comments = await this.getCommentListBackend(this.movieId)
+  },
+  data () {
+    return {
+      comments: []
     }
   },
   methods: {
+    ...mapActions('comments', ['getCommentListBackend']),
     getInitials (name) {
       const initials = name.match(/\b\w/g) || []
       return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()

@@ -1,6 +1,10 @@
+import { mapListFromBackend } from '@/lib/API/comments/mapping'
+
 export const actions = {
   async getCommentListBackend ({ commit, state }, movieId) {
-    return await this.$backend.comments.getComments(movieId)
+    const comments = await this.$backend.comments.getComments(movieId)
+    mapListFromBackend(comments)
+    return comments
   },
 
   async addCommentBackend ({ commit }, { comment, movieId }) {
