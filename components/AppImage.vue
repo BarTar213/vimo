@@ -1,10 +1,10 @@
 <template>
-  <v-card max-width="300">
+  <v-card max-width="220" min-width="220">
     <v-img
       :src="getImageURL()"
       lazy-src="https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg"
-      max-width="300"
-      max-height="450"
+      max-width="220"
+      max-height="330"
     >
       <template v-slot:placeholder>
         <v-row

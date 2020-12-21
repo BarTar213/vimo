@@ -1,6 +1,9 @@
+import { mapEntityFromBackend } from '@/lib/API/movies/mapping'
+
 export const actions = {
   async getFromBackend ({ commit, state }, id) {
-    return await this.$backend.movies.getMovieItem(id)
+    const movie = await this.$backend.movies.getMovieItem(id)
+    return mapEntityFromBackend(movie)
   },
 
   async likeMovieBackend ({ commit }, { id, beforeVal }) {

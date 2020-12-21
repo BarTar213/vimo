@@ -24,7 +24,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              <v-icon x-large>
+              <v-icon x-large color="amber lighten-2">
                 mdi-star
               </v-icon>
             </v-btn>
@@ -39,7 +39,7 @@
               :half-increments="true"
               :hover="true"
               size="30"
-              color="cyan lighten-3"
+              color="amber lighten-2"
               background-color="grey lighten-1"
               :close-delay="500"
             />
