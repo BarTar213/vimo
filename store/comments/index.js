@@ -7,12 +7,12 @@ export const actions = {
     return comments
   },
 
-  async addCommentBackend ({ commit }, { comment, movieId }) {
-    return await this.$backend.comments.addComment(comment, movieId)
+  async addCommentBackend ({ commit }, { content, movieId }) {
+    return await this.$backend.comments.addComment(content, movieId)
   },
 
-  async updateCommentBackend ({ commit }, { id, comment }) {
-    return (await this.$backend.comments.updateComment(id, comment))
+  async updateCommentBackend ({ commit }, { id, content }) {
+    return (await this.$backend.comments.updateComment(id, content))
   },
 
   async deleteCommentBackend ({ commit }, id) {

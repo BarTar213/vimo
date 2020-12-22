@@ -1,15 +1,14 @@
 <template>
-  <div class="v-comment">
-    <div class="v-comment-inner">
+  <v-row class="v-comment">
+    <v-col cols="10" class="v-comment-inner">
       <v-avatar color="red" class="v-comment-avatar">
         {{ comment.user_id }}
       </v-avatar>
       <v-row class="v-comment-content" justify="start" no-gutters>
         <v-col cols="12" align-self="start">
           <div class="v-comment-content-author">
-            <span class="v-comment-content-author-name">{{ comment.user_id }}</span><span
-              class="v-comment-content-author-time"
-            >{{ comment.create_date }}</span>
+            <span class="v-comment-content-author-name">{{ comment.user_id }}</span>
+            <span class="v-comment-content-author-time">{{ comment.create_date }}</span>
           </div>
           <div class="v-comment-content-detail">
             {{ comment.content }}
@@ -17,17 +16,28 @@
           <CommentToolbar :liked="liked" :disliked="disliked" :likes="comment.likes" @like="like" />
         </v-col>
       </v-row>
-    </div>
-  </div>
+    </v-col>
+    <v-col cols="2" align-self="center">
+      <v-row>
+        <CommentUpdateInput :comment-id="comment.id" :before-content="comment.content" @refresh="refreshParent" />
+        <v-btn icon @click="deleteComment">
+          <v-icon color="red">
+            mdi-trash-can-outline
+          </v-icon>
+        </v-btn>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import CommentToolbar from '@/components/CommentToolbar'
+import CommentUpdateInput from '@/components/CommentUpdateInput'
 
 export default {
   name: 'Comment',
-  components: { CommentToolbar },
+  components: { CommentUpdateInput, CommentToolbar },
   props: {
     comment: {
       type: Object,
@@ -45,7 +55,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('comments', ['likeCommentBackend']),
+    ...mapActions('comments', ['likeCommentBackend', 'deleteCommentBackend']),
     like () {
       this.likeCommentBackend({
         id: this.comment.id,
@@ -54,105 +64,116 @@ export default {
         .then(() => {
           this.liked = !(this.liked)
         })
+    },
+    deleteComment () {
+      this.deleteCommentBackend(this.comment.id).then(() => {
+        this.$emit('refresh')
+      })
+    },
+    refreshParent () {
+      this.$emit('refresh')
     }
   }
 }
 </script>
 
-<style lang="less" scoped>
+<style scoped>
 
 .v-comment {
+}
+
+.v-comment-inner {
+  display: flex;
+  padding-bottom: 16px;
+  padding-top: 16px;
+}
+
+.v-comment-avatar {
   position: relative;
+  flex-shrink: 0;
+  margin-right: 14px;
+  cursor: pointer;
+}
 
-  &-inner {
-    display: flex;
-    padding-bottom: 16px;
-    padding-top: 16px;
-  }
-;
+.v-comment-avatar img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
 
-  &-avatar {
-    position: relative;
-    flex-shrink: 0;
-    margin-right: 14px;
-    cursor: pointer;
+.v-comment-content {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 1px;
+  font-size: 14px;
+  word-wrap: break-word;
+}
 
-    img {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-    }
-  }
+.v-comment-content-author {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
 
-  &-content {
-    position: relative;
-    flex: 1 1 auto;
-    min-width: 1px;
-    font-size: 14px;
-    word-wrap: break-word;
+.v-comment-content-author > a,
+.v-comment-content-author > span {
+  padding-right: 8px;
+  font-size: 14px;
+  line-height: 18px;
+}
 
-    &-author {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      margin-bottom: 4px;
-      font-size: 14px;
+.v-comment-content-author-name {
+  color: gray;
+  font-size: 14px;
+  transition: color 0.3s;
+}
 
-      & > a,
-      & > span {
-        padding-right: 8px;
-        font-size: 14px;
-        line-height: 18px;
-      }
+.v-comment-content-author-name > * {
+  color: rgba(0, 0, 0, 0.45);
+}
 
-      &-name {
-        color: gray;
-        font-size: 14px;
-        transition: color 0.3s;
+.v-comment-content-author-name > *:hover {
+  color: rgba(0, 0, 0, 0.45);
+}
 
-        > * {
-          color: rgba(0, 0, 0, .45);
+.v-comment-content-author-time {
+  color: #ccc;
+  white-space: nowrap;
+  cursor: auto;
+}
 
-          &:hover {
-            color: rgba(0, 0, 0, .45);
-          }
-        }
-      }
+.v-comment-content-detail p {
+  white-space: pre-wrap;
+}
 
-      &-time {
-        color: #ccc;
-        white-space: nowrap;
-        cursor: auto;
-      }
-    }
+.v-comment-actions {
+  margin-top: 12px;
+  margin-right: 2px;
+  padding-left: 0;
+}
 
-    &-detail p {
-      white-space: pre-wrap;
-    }
-  }
+.v-comment-actions > li {
+  display: inline-block;
+  color: grey;
+}
 
-  &-actions {
-    margin-top: 12px;
-    padding-left: 0;
+.v-comment-actions > li > span {
+  padding-right: 10px;
+  color: grey;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s;
+  user-select: none;
+}
 
-    > li {
-      display: inline-block;
-      color: grey;
+.v-comment-actions > li > span:hover {
+  color: rgba(0, 0, 0, 0.45);
+}
 
-      > span {
-        padding-right: 10px;
-        color: grey;
-        font-size: 14px;
-        cursor: pointer;
-        transition: color 0.3s;
-        user-select: none;
-
-        &:hover {
-          color: rgba(0, 0, 0, .45);
-        }
-      }
-    }
-  }
+.v-comment-user-action {
+  float: right;
 }
 
 </style>

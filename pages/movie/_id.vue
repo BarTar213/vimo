@@ -47,7 +47,6 @@
     <div class="d-flex justify-center mb-6">
       <v-row align="center" style="max-width: 1220px;">
         <v-col cols="12">
-          <h1>Comments</h1>
           <CommentList :movie-id="movie.id" />
         </v-col>
       </v-row>
@@ -84,35 +83,8 @@ export default {
       liked: false
     }
   },
-  computed: {
-    releaseDate () {
-      const date = new Date(Date.parse(this.movie.release_date))
-      return date.toLocaleDateString()
-    }
-  },
   methods: {
     ...mapActions('movies', ['getFromBackend', 'checkLikedBackend', 'likeMovieBackend']),
-    toDate () {
-      const date = new Date(Date.parse(this.movie.release_date))
-      return date.toLocaleDateString()
-    },
-    genreArray () {
-      const genres = []
-      for (const genre of this.movie.genres) {
-        genres.push(genre.name)
-      }
-
-      return genres.join(', ')
-    },
-    convertTime (time) {
-      const hours = Math.floor(time / 60)
-      const minutes = time % 60
-      let result = ''
-      if (hours > 0) {
-        result += hours + 'h '
-      }
-      return result + minutes + 'm'
-    },
     like () {
       this.likeMovieBackend({
         id: this.movie.id,
