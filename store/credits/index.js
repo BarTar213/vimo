@@ -1,5 +1,8 @@
+import { mapEntityFromBackend } from '@/lib/API/credits/mapping'
+
 export const actions = {
   async getFromBackend ({ commit, state }, movieId) {
-    return await this.$backend.credits.getCredits(movieId)
+    const credits = await this.$backend.credits.getCredits(movieId)
+    return mapEntityFromBackend(credits)
   }
 }
