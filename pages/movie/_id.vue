@@ -47,6 +47,7 @@
     <div class="d-flex justify-center mb-6">
       <v-row align="center" style="max-width: 1220px;">
         <v-col cols="12">
+          <Credit :movie-id="movie.id" />
           <CommentList :movie-id="movie.id" />
         </v-col>
       </v-row>
@@ -60,10 +61,12 @@ import AppImage from '@/components/AppImage'
 import Rating from '@/components/Rating'
 import MovieInfo from '@/components/MovieInfo'
 import CommentList from '@/components/comment/CommentList'
+import Credit from '@/components/credits/Credit'
 
 export default {
   name: 'Id',
   components: {
+    Credit,
     CommentList,
     MovieInfo,
     Rating,
