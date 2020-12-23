@@ -14,7 +14,20 @@
     return-object
     filled
     dense
-  />
+  >
+    <template v-slot:item="{ item }">
+      <v-card rounded style="margin-right: 10px; margin-bottom: 10px">
+        <v-img :src="item.poster_path" max-width="88" />
+      </v-card>
+      <v-list-item-content>
+        <v-list-item-title v-text="item.title" />
+        <v-list-item-subtitle v-text="item.release_date" />
+      </v-list-item-content>
+      <nuxt-link :to="`/movie/${item.id}`">
+        <button> View Item ></button>
+      </nuxt-link>
+    </template>
+  </v-autocomplete>
 </template>
 
 <script>
