@@ -41,12 +41,14 @@
               <MovieInfo :movie="movie" />
             </v-col>
           </v-row>
+          <v-divider />
         </v-col>
       </v-row>
     </div>
     <div class="d-flex justify-center mb-6">
       <v-row align="center" style="max-width: 1220px;">
         <v-col cols="12">
+          <v-spacer />
           <Credit :movie-id="movie.id" />
           <CommentList :movie-id="movie.id" />
         </v-col>
