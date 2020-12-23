@@ -59,7 +59,7 @@ import { mapActions } from 'vuex'
 import AppImage from '@/components/AppImage'
 import Rating from '@/components/Rating'
 import MovieInfo from '@/components/MovieInfo'
-import CommentList from '@/components/CommentList'
+import CommentList from '@/components/comment/CommentList'
 
 export default {
   name: 'Id',

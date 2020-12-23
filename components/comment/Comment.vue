@@ -13,7 +13,7 @@
           <div class="v-comment-content-detail">
             {{ comment.content }}
           </div>
-          <CommentToolbar :liked="liked" :disliked="disliked" :likes="comment.likes" @like="like" />
+          <CommentToolbar :liked="liked" :disliked="disliked" :likes="comment.likes" @like="like" @dislike="dislike" />
         </v-col>
       </v-row>
     </v-col>
@@ -31,39 +31,61 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import CommentToolbar from '@/components/CommentToolbar'
-import CommentUpdateInput from '@/components/CommentUpdateInput'
+import { mapActions, mapGetters } from 'vuex'
+import CommentToolbar from '@/components/comment/CommentToolbar'
+import CommentUpdateInput from '@/components/comment/CommentUpdateInput'
 
 export default {
   name: 'Comment',
-  components: { CommentUpdateInput, CommentToolbar },
+  components: {
+    CommentUpdateInput,
+    CommentToolbar
+  },
   props: {
     comment: {
       type: Object,
       default () {
         return []
       }
-    },
-    liked: {
-      type: Boolean,
-      default: false
-    },
-    disliked: {
-      type: Boolean,
-      default: false
     }
   },
+  data () {
+    return {
+      liked: false,
+      disliked: false
+    }
+  },
+  computed: {
+    ...mapGetters('comments', ['checkLikedComment'])
+  },
+  mounted () {
+    this.liked = this.checkLikedComment(this.comment.movie_id, this.comment.id)
+  },
   methods: {
-    ...mapActions('comments', ['likeCommentBackend', 'deleteCommentBackend']),
+    ...mapActions('comments', ['likeCommentBackend', 'deleteCommentBackend', 'getLikedCommentsListBackend']),
     like () {
+      if (this.disliked) {
+        this.disliked = false
+      }
+
       this.likeCommentBackend({
         id: this.comment.id,
         beforeVal: this.liked
+      }).then(() => {
+        this.liked = !this.liked
+        if (this.liked) {
+          this.comment.likes++
+        } else {
+          this.comment.likes--
+        }
+        this.getLikedCommentsListBackend(this.comment.movie_id)
       })
-        .then(() => {
-          this.liked = !(this.liked)
-        })
+    },
+    dislike () {
+      if (this.liked) {
+        this.like()
+      }
+      this.disliked = !this.disliked
     },
     deleteComment () {
       this.deleteCommentBackend(this.comment.id).then(() => {

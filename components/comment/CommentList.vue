@@ -22,8 +22,8 @@
 
 <script>
 import { mapActions } from 'vuex'
-import Comment from '@/components/Comment'
-import CommentInput from '@/components/CommentInput'
+import Comment from '@/components/comment/Comment'
+import CommentInput from '@/components/comment/CommentInput'
 
 export default {
   name: 'CommentList',
@@ -39,15 +39,17 @@ export default {
   },
   async fetch () {
     this.comments = await this.getCommentListBackend(this.movieId)
+    await this.getLikedCommentsListBackend(this.movieId)
   },
   data () {
     return {
       comments: [],
-      commentOverlay: false
+      commentOverlay: false,
+      likedComments: []
     }
   },
   methods: {
-    ...mapActions('comments', ['getCommentListBackend']),
+    ...mapActions('comments', ['getCommentListBackend', 'getLikedCommentsListBackend']),
     getInitials (name) {
       const initials = name.match(/\b\w/g) || []
       return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
