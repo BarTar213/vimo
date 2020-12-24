@@ -14,6 +14,7 @@
     return-object
     filled
     dense
+    @change="itemChange"
   >
     <template v-slot:item="{ item }">
       <v-card rounded style="margin-right: 10px; margin-bottom: 10px">
@@ -23,9 +24,6 @@
         <v-list-item-title v-text="item.title" />
         <v-list-item-subtitle v-text="item.release_date" />
       </v-list-item-content>
-      <nuxt-link :to="`/movie/${item.id}`">
-        <button> View Item ></button>
-      </nuxt-link>
     </template>
   </v-autocomplete>
 </template>
@@ -76,10 +74,22 @@ export default {
           console.log(err)
         })
         .finally(() => (this.isLoading = false))
+    },
+    model () {
+      if (!this.model) {
+        return
+      }
+      const id = this.model.id
+      this.$router.push(`/movie/${id}`)
     }
   },
   methods: {
-    ...mapActions('movies', ['searchMoviesBackend'])
+    ...mapActions('movies', ['searchMoviesBackend']),
+    itemChange () {
+      this.$nextTick(() => {
+        this.model = null
+      })
+    }
   }
 }
 </script>

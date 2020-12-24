@@ -2,7 +2,7 @@
   <div>
     <div class="poster">
       <v-img
-        :src="backdropURL"
+        :src="movie.backdrop_path"
         gradient="90deg, rgba(0,0,0,1) 12%, rgba(255,255,255,0) 50%, rgba(0,0,0,1) 88%"
         max-height="500"
       >
@@ -64,6 +64,7 @@ import Rating from '@/components/Rating'
 import MovieInfo from '@/components/MovieInfo'
 import CommentList from '@/components/comment/CommentList'
 import Credit from '@/components/credits/Credit'
+import { mapEntityFromBackend } from '@/lib/API/movies/mapping'
 
 export default {
   name: 'Id',
@@ -74,20 +75,26 @@ export default {
     Rating,
     AppImage
   },
-  async fetch () {
-    this.movie = await this.getFromBackend(this.id)
-    this.liked = await this.checkLikedBackend(this.id)
-
-    this.backdropURL = `http://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${this.movie.backdrop_path}`
+  // async fetch () {
+  //   this.movie = await this.getFromBackend(this.id)
+  //   this.liked = await this.checkLikedBackend(this.id)
+  //
+  //   this.backdropURL = `http://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${this.movie.backdrop_path}`
+  // },
+  async asyncData ({ params, $axios }) {
+    const movie = await $axios.$get(`/moviesvc/movies/${params.id}`)
+    mapEntityFromBackend(movie)
+    return { movie }
   },
   data () {
     return {
       id: this.$route.params.id,
-      movie: [],
+      // movie: [],
       backdropURL: '',
       liked: false
     }
   },
+  fetchOnServer: true,
   methods: {
     ...mapActions('movies', ['getFromBackend', 'checkLikedBackend', 'likeMovieBackend']),
     like () {
