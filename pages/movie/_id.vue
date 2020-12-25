@@ -75,12 +75,6 @@ export default {
     Rating,
     AppImage
   },
-  // async fetch () {
-  //   this.movie = await this.getFromBackend(this.id)
-  //   this.liked = await this.checkLikedBackend(this.id)
-  //
-  //   this.backdropURL = `http://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${this.movie.backdrop_path}`
-  // },
   async asyncData ({ params, $axios }) {
     const movie = await $axios.$get(`/moviesvc/movies/${params.id}`)
     mapEntityFromBackend(movie)
@@ -89,7 +83,6 @@ export default {
   data () {
     return {
       id: this.$route.params.id,
-      // movie: [],
       backdropURL: '',
       liked: false
     }

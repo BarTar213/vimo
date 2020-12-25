@@ -5,6 +5,7 @@
     <Snackbar />
     <v-main>
       <v-container>
+        <AuthDialog />
         <nuxt />
       </v-container>
     </v-main>
@@ -18,12 +19,14 @@
 </template>
 
 <script>
+import AuthDialog from '@/components/auth/AuthDialog'
 import Navigation from '~/components/Navigation'
 import AppBar from '~/components/AppBar'
 import Snackbar from '~/components/Snackbar'
 
 export default {
   components: {
+    AuthDialog,
     AppBar,
     Navigation,
     Snackbar
