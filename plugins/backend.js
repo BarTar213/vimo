@@ -1,6 +1,7 @@
 import moviesEntity from '@/lib/API/movies/entity.js'
 import commentsEntity from '@/lib/API/comments/entity.js'
 import creditsEntity from '@/lib/API/credits/entity.js'
+import authEntity from '@/lib/API/auth/entity.js'
 
 export default ({ $axios, store }, inject) => {
   inject('backend', {
@@ -12,6 +13,9 @@ export default ({ $axios, store }, inject) => {
     },
     credits: {
       ...creditsEntity($axios, store)
+    },
+    users: {
+      ...authEntity($axios, store)
     }
   })
 }

@@ -5,11 +5,11 @@
         <v-row>
           <v-col cols="12">
             <v-text-field
-              v-model="login.email"
+              v-model="login.login"
               autofocus
-              label="E-mail"
+              label="Login"
               color="cyan lighten-3"
-              :error-messages="emailErrors"
+              :error-messages="loginErrors"
             />
           </v-col>
           <v-col cols="12">
@@ -39,9 +39,9 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import { validationMixin } from 'vuelidate'
-import { required, maxLength, minLength, email } from 'vuelidate/lib/validators'
+import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 
 export default {
   name: 'LoginTab',
@@ -49,7 +49,7 @@ export default {
   data () {
     return {
       login: {
-        email: '',
+        login: '',
         password: ''
       },
       showPassword: false
@@ -57,9 +57,8 @@ export default {
   },
   validations: {
     login: {
-      email: {
+      login: {
         required,
-        email,
         maxLength: maxLength(20),
         minLength: minLength(1)
       },
@@ -71,12 +70,11 @@ export default {
     }
   },
   computed: {
-    emailErrors () {
+    loginErrors () {
       const errors = []
       if (!this.$v.login.$dirty) { return errors }
 
-      !this.$v.login.email.required && errors.push('Email is required')
-      !this.$v.login.email.email && errors.push('Invalid e-mail')
+      !this.$v.login.login.required && errors.push('Login is required')
       return errors
     },
     passwordErrors () {
@@ -89,18 +87,18 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['updateDialog']),
+    ...mapActions('auth', ['loginUserBackend']),
     cancel () {
       this.$v.$reset()
       this.updateDialog(false)
       this.resetLogin()
-      // this.content = ''
-      // this.overlay = false
     },
     save () {
       this.$v.login.$touch()
       if (this.$v.login.$invalid) {
         return
       }
+      this.loginUserBackend({ login: this.login.login, password: this.login.password })
       console.log('logged')
       this.updateDialog(false)
       this.$v.$reset()
@@ -108,7 +106,7 @@ export default {
     },
     resetLogin () {
       this.login = {
-        email: '',
+        login: '',
         password: ''
       }
       this.showPassword = false
