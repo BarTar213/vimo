@@ -15,6 +15,9 @@ export const getters = {
 export const mutations = {
   updateDialog: (state, payload) => {
     state.dialog = payload
+  },
+  updateUser: (state, user) => {
+    state.user = user
   }
 }
 
@@ -23,7 +26,10 @@ export const actions = {
     return (await this.$backend.users.addUser(user))
   },
   async loginUserBackend ({ commit, state }, user) {
-    return (await this.$backend.users.loginUser(user))
+    await this.$backend.users.loginUser(user)
+
+    const data = (await this.$backend.users.getCurrentUser(state))
+    commit('updateUser', data)
   },
   async verifyLoginBackend ({ commit, state }, { login, code }) {
     return (await this.$backend.users.verifyLogin(login, code))
