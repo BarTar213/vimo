@@ -1,6 +1,7 @@
 export const state = () => ({
   user: null,
-  dialog: true
+  dialog: true,
+  dialogTitle: true
 })
 
 export const getters = {
@@ -18,6 +19,13 @@ export const mutations = {
   },
   updateUser: (state, user) => {
     state.user = user
+  },
+  updateDialogTitle: (state, payload) => {
+    state.dialogTitle = payload
+  },
+  updateAuthDialog: (state, payload) => {
+    state.dialog = payload
+    state.dialogTitle = payload
   }
 }
 

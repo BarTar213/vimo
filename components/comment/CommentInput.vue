@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength } from 'vuelidate/lib/validators'
 
@@ -75,6 +75,7 @@ export default {
     content: { required, maxLength: maxLength(50), minLength: minLength(1) }
   },
   computed: {
+    ...mapState('auth', ['user']),
     contentErrors () {
       const errors = []
       if (!this.$v.content.$dirty) { return errors }
@@ -85,7 +86,13 @@ export default {
   },
   methods: {
     ...mapActions('comments', ['addCommentBackend']),
+    ...mapMutations('auth', ['updateAuthDialog']),
     save () {
+      if (this.user == null) {
+        this.updateAuthDialog(true)
+        return
+      }
+
       this.$v.$touch()
       if (this.$v.$invalid) {
         return

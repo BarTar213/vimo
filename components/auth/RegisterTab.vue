@@ -159,14 +159,13 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('auth', ['updateDialog']),
+    ...mapMutations('auth', ['updateDialog', 'updateDialogTitle']),
     ...mapActions('auth', ['addUserBackend']),
     cancel () {
       this.$v.$reset()
       this.updateDialog(false)
+      this.updateDialogTitle(false)
       this.resetRegistration()
-      // this.content = ''
-      // this.overlay = false
     },
     register () {
       this.$v.registration.$touch()
@@ -181,6 +180,7 @@ export default {
         password: this.registration.password
       })
       this.updateDialog(false)
+      this.updateDialogTitle(false)
       this.resetRegistration()
       this.$v.$reset()
     },

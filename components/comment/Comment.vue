@@ -18,7 +18,7 @@
       </v-row>
     </v-col>
     <v-col cols="2" align-self="center">
-      <v-row>
+      <v-row v-if="user != null && comment.user_id===user.id">
         <CommentUpdateInput :comment-id="comment.id" :before-content="comment.content" @refresh="refreshParent" />
         <v-btn icon @click="deleteComment">
           <v-icon color="red">
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex'
 import CommentToolbar from '@/components/comment/CommentToolbar'
 import CommentUpdateInput from '@/components/comment/CommentUpdateInput'
 
@@ -67,9 +67,15 @@ export default {
   },
   methods: {
     ...mapActions('comments', ['likeCommentBackend', 'deleteCommentBackend', 'getLikedCommentsListBackend']),
+    ...mapMutations('auth', ['updateAuthDialog']),
     like () {
       if (this.disliked) {
         this.disliked = false
+      }
+
+      if (this.user == null) {
+        this.updateAuthDialog(true)
+        return
       }
 
       this.likeCommentBackend({
@@ -86,12 +92,22 @@ export default {
       })
     },
     dislike () {
+      if (this.user == null) {
+        this.updateAuthDialog(true)
+        return
+      }
+
       if (this.liked) {
         this.like()
       }
       this.disliked = !this.disliked
     },
     deleteComment () {
+      if (this.user == null) {
+        this.updateAuthDialog(true)
+        return
+      }
+
       this.deleteCommentBackend(this.comment.id).then(() => {
         this.$emit('refresh')
       })

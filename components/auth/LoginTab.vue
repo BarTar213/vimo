@@ -86,11 +86,12 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('auth', ['updateDialog']),
+    ...mapMutations('auth', ['updateDialog', 'updateDialogTitle']),
     ...mapActions('auth', ['loginUserBackend']),
     cancel () {
       this.$v.$reset()
       this.updateDialog(false)
+      this.updateDialogTitle(false)
       this.resetLogin()
     },
     save () {
@@ -100,6 +101,7 @@ export default {
       }
       this.loginUserBackend({ login: this.login.login, password: this.login.password })
       this.updateDialog(false)
+      this.updateDialogTitle(false)
       this.$v.$reset()
       this.resetLogin()
     },

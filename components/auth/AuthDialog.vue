@@ -1,6 +1,9 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="600px" min-width="360px">
-    <div>
+    <v-card color="cyan lighten-3" dark>
+      <v-card-title v-if="dialogTitle" class="justify-center">
+        This action requires authentication
+      </v-card-title>
       <v-tabs
         v-model="tab"
         show-arrows
@@ -25,7 +28,7 @@
           <RegisterTab />
         </v-tab-item>
       </v-tabs>
-    </div>
+    </v-card>
   </v-dialog>
 </template>
 
@@ -51,7 +54,7 @@ export default {
     ]
   }),
   computed: {
-    ...mapState('auth', ['dialog'])
+    ...mapState('auth', ['dialog', 'dialogTitle'])
   },
   methods: {
     ...mapMutations('auth', ['updateDialog'])
