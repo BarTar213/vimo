@@ -3,7 +3,7 @@
     <v-menu bottom :offset-y="true">
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          v-if="getCurrentUser().login"
+          v-if="getCurrentUser()"
           icon
           v-bind="attrs"
           v-on="on"
@@ -24,7 +24,7 @@
         </v-btn>
       </template>
 
-      <v-list v-if="getCurrentUser().login">
+      <v-list v-if="getCurrentUser()">
         <v-list-item
           v-for="(item, index) in loggedItems"
           :key="index"
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'Account',
@@ -63,11 +63,12 @@ export default {
   }),
   computed: {
     ...mapGetters('auth', ['getCurrentUser']),
-    user () {
-      return this.getCurrentUser()
-    },
+    ...mapState('auth', ['user']),
     loginInitials () {
-      const initials = this.getCurrentUser().login.match(/\b\w/g) || []
+      if (this.user == null) {
+        return ''
+      }
+      const initials = this.user.login.match(/\b\w/g) || []
       return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
     }
   },

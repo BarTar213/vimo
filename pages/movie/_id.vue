@@ -79,7 +79,7 @@ export default {
   async fetch () {
     this.liked = await this.checkLikedBackend(this.id)
   },
-  async asyncData ({ params, $axios, store }) {
+  async asyncData ({ params, $axios }) {
     const movie = await $axios.$get(`${backendAddresses.movieSvc}/movies/${params.id}`)
     mapEntityFromBackend(movie)
     return { movie }

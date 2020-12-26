@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import CommentToolbar from '@/components/comment/CommentToolbar'
 import CommentUpdateInput from '@/components/comment/CommentUpdateInput'
 
@@ -56,9 +56,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('comments', ['checkLikedComment'])
+    ...mapGetters('comments', ['checkLikedComment']),
+    ...mapState('auth', ['user'])
   },
   mounted () {
+    if (this.user == null) {
+      return
+    }
     this.liked = this.checkLikedComment(this.comment.movie_id, this.comment.id)
   },
   methods: {

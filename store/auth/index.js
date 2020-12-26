@@ -1,5 +1,5 @@
 export const state = () => ({
-  user: Object.create(null),
+  user: null,
   dialog: true
 })
 

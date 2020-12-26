@@ -10,7 +10,10 @@ export const actions = {
     return await this.$backend.movies.likeMovie(id, beforeVal)
   },
 
-  async checkLikedBackend ({ commit }, id) {
+  async checkLikedBackend ({ commit, state }, id) {
+    if (state.user == null) {
+      return false
+    }
     return (await this.$backend.movies.checkLiked(id)).liked
   },
 

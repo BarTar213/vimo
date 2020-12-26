@@ -70,6 +70,10 @@ export default {
     }
   },
 
+  router: {
+    middleware: ['auth-user']
+  },
+
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
   }
