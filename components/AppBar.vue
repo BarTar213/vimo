@@ -30,21 +30,17 @@
     <v-btn icon>
       <v-icon>mdi-bell</v-icon>
     </v-btn>
-    <v-btn
-      icon
-      @click.stop="rightDrawer = !rightDrawer"
-    >
-      <v-icon>mdi-account-circle</v-icon>
-    </v-btn>
+    <Account />
   </v-app-bar>
 </template>
 
 <script>
+import Account from '@/components/account/Account'
 import SearchBar from '~/components/SearchBar'
 
 export default {
   name: 'AppBar',
-  components: { SearchBar },
+  components: { Account, SearchBar },
   data () {
     return {
       clipped: false,

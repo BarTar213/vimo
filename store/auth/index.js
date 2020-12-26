@@ -4,10 +4,10 @@ export const state = () => ({
 })
 
 export const getters = {
-  getDialog: (state) => {
+  getDialog: state => () => {
     return state.dialog
   },
-  getCurrentUser: (state) => {
+  getCurrentUser: state => () => {
     return state.user
   }
 }

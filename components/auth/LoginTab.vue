@@ -99,7 +99,6 @@ export default {
         return
       }
       this.loginUserBackend({ login: this.login.login, password: this.login.password })
-      console.log('logged')
       this.updateDialog(false)
       this.$v.$reset()
       this.resetLogin()
