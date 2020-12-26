@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, minLength, email, sameAs } from 'vuelidate/lib/validators'
 
@@ -160,6 +160,7 @@ export default {
   },
   methods: {
     ...mapMutations('auth', ['updateDialog']),
+    ...mapActions('auth', ['addUserBackend']),
     cancel () {
       this.$v.$reset()
       this.updateDialog(false)
@@ -172,7 +173,13 @@ export default {
       if (this.$v.registration.$invalid) {
         return
       }
-      console.log('logged')
+
+      this.addUserBackend({
+        name: this.registration.name,
+        email: this.registration.email,
+        login: this.registration.login,
+        password: this.registration.password
+      })
       this.updateDialog(false)
       this.resetRegistration()
       this.$v.$reset()

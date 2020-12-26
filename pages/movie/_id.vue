@@ -59,12 +59,13 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { mapEntityFromBackend } from '@/lib/API/movies/mapping'
+import { backendAddresses } from '@/lib/API/helpers/backend-address'
 import AppImage from '@/components/AppImage'
 import Rating from '@/components/Rating'
 import MovieInfo from '@/components/MovieInfo'
 import CommentList from '@/components/comment/CommentList'
 import Credit from '@/components/credits/Credit'
-import { mapEntityFromBackend } from '@/lib/API/movies/mapping'
 
 export default {
   name: 'Id',
@@ -75,8 +76,11 @@ export default {
     Rating,
     AppImage
   },
-  async asyncData ({ params, $axios }) {
-    const movie = await $axios.$get(`/moviesvc/movies/${params.id}`)
+  async fetch () {
+    this.liked = await this.checkLikedBackend(this.id)
+  },
+  async asyncData ({ params, $axios, store }) {
+    const movie = await $axios.$get(`${backendAddresses.movieSvc}/movies/${params.id}`)
     mapEntityFromBackend(movie)
     return { movie }
   },
