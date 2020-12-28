@@ -17,6 +17,10 @@ export const actions = {
     return (await this.$backend.movies.checkLiked(id)).liked
   },
 
+  async listLikedMoviesBackend () {
+    return await this.$backend.movies.listLikedMovies()
+  },
+
   searchMoviesBackend ({ commit }, title) {
     return this.$backend.movies.searchMovies(title)
   }
