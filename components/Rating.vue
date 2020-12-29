@@ -43,6 +43,14 @@
               background-color="grey lighten-1"
               :close-delay="500"
             />
+            <v-card-actions v-if="userRating!==0" style="margin-top: 5px">
+              <v-spacer />
+              <v-btn icon @click="deleteRating">
+                <v-icon color="red">
+                  mdi-trash-can-outline
+                </v-icon>
+              </v-btn>
+            </v-card-actions>
           </v-card>
         </v-menu>
       </v-col>
@@ -61,9 +69,15 @@
 
 <script>
 
+import { mapActions } from 'vuex'
+
 export default {
   name: 'Rating',
   props: {
+    movieId: {
+      type: Number,
+      default: 0
+    },
     liked: {
       type: Boolean,
       default: false
@@ -72,6 +86,10 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  async fetch () {
+    const data = await this.getRatingBackend(this.movieId)
+    this.userRating = data.rating / 2
   },
   data () {
     return {
@@ -91,11 +109,21 @@ export default {
           this.hearIcon = 'mdi-heart-outline'
         }
       }
+    },
+    userRating: {
+      handler () {
+        this.addRatingBackend({ movieId: this.movieId, rating: this.userRating * 2 })
+      }
     }
   },
   methods: {
+    ...mapActions('movies', ['addRatingBackend', 'deleteRatingBackend', 'getRatingBackend']),
     like () {
       this.$emit('like')
+    },
+    deleteRating () {
+      this.deleteRatingBackend(this.movieId)
+      this.userRating = 0
     }
   }
 }

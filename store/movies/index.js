@@ -10,8 +10,8 @@ export const actions = {
     return await this.$backend.movies.likeMovie(id, beforeVal)
   },
 
-  async checkLikedBackend ({ commit, state }, id) {
-    if (state.user == null) {
+  async checkLikedBackend ({ commit, rootState }, id) {
+    if (rootState.auth.user == null) {
       return false
     }
     return (await this.$backend.movies.checkLiked(id)).liked
@@ -26,11 +26,15 @@ export const actions = {
   },
 
   // ratings
+  async getRatingBackend ({ commit, state }, movieId) {
+    return await this.$backend.movies.getRating(movieId)
+  },
+
   async addRatingBackend ({ commit, state }, { movieId, rating }) {
     return await this.$backend.movies.addRating(movieId, rating)
   },
 
-  async deleteRatingBackend ({ commit, state }, { movieId }) {
+  async deleteRatingBackend ({ commit, state }, movieId) {
     return await this.$backend.movies.deleteRating(movieId)
   },
 

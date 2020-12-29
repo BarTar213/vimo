@@ -36,7 +36,7 @@
             <v-col align-self="start" cols="9">
               <h2>Overview</h2>
               <h5>{{ movie.overview }}</h5>
-              <Rating :liked="liked" :rating="movie.vote_average" style="margin-top: 10px; margin-bottom: 10px" @like="like" />
+              <Rating :liked="liked" :rating="movie.vote_average" :movie-id="movie.id" style="margin-top: 10px; margin-bottom: 10px" @like="like" />
               <v-divider style="margin-bottom: 10px" />
               <MovieInfo :movie="movie" />
             </v-col>
@@ -76,9 +76,6 @@ export default {
     Rating,
     AppImage
   },
-  async fetch () {
-    // this.liked = await this.checkLikedBackend(this.id)
-  },
   async asyncData ({ params, $axios, store }) {
     const movie = await $axios.$get(`${backendAddresses.movieSvc}/movies/${params.id}`)
     mapEntityFromBackend(movie)
@@ -88,7 +85,8 @@ export default {
   data () {
     return {
       id: this.$route.params.id,
-      backdropURL: ''
+      backdropURL: '',
+      rating: 0
     }
   },
   fetchOnServer: true,
