@@ -15,7 +15,6 @@
               <v-col
                 v-for="movie in likedMovies"
                 :key="movie.id"
-                class="d-flex child-flex"
                 cols="12"
               >
                 <v-card width="100%" style="padding: 0" max-height="225" :to="movie.to">

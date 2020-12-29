@@ -26,10 +26,10 @@
         </div>
       </v-img>
     </div>
-    <div class="d-flex justify-center mb-6">
+    <div class="d-flex justify-center mb-6" style="margin-top: 20px">
       <v-row align="center" style="max-width: 1220px;">
         <v-col cols="12">
-          <v-row>
+          <v-row style="margin-bottom: 10px">
             <v-col align-self="center" cols="3" style="min-width: 220px">
               <AppImage :path="movie.poster_path" />
             </v-col>
@@ -37,7 +37,7 @@
               <h2>Overview</h2>
               <h5>{{ movie.overview }}</h5>
               <Rating :liked="liked" :rating="movie.vote_average" style="margin-top: 10px; margin-bottom: 10px" @like="like" />
-              <v-divider />
+              <v-divider style="margin-bottom: 10px" />
               <MovieInfo :movie="movie" />
             </v-col>
           </v-row>
@@ -77,18 +77,18 @@ export default {
     AppImage
   },
   async fetch () {
-    this.liked = await this.checkLikedBackend(this.id)
+    // this.liked = await this.checkLikedBackend(this.id)
   },
-  async asyncData ({ params, $axios }) {
+  async asyncData ({ params, $axios, store }) {
     const movie = await $axios.$get(`${backendAddresses.movieSvc}/movies/${params.id}`)
     mapEntityFromBackend(movie)
-    return { movie }
+    const liked = await store.dispatch('movies/checkLikedBackend', params.id)
+    return { movie, liked }
   },
   data () {
     return {
       id: this.$route.params.id,
-      backdropURL: '',
-      liked: false
+      backdropURL: ''
     }
   },
   fetchOnServer: true,
