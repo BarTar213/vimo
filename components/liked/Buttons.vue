@@ -15,7 +15,7 @@
       <v-col align-self="center" cols="2">
         <v-avatar color="amber lighten-2">
           <h2 style="color: white">
-            5
+            {{ userRating }}
           </h2>
         </v-avatar>
         <span class="toolbar-info">Your rating</span>
@@ -42,13 +42,16 @@ export default {
     rating: {
       type: Number,
       default: 0
+    },
+    userRating: {
+      type: Number,
+      default: 0
     }
   },
   data () {
     return {
       hearIcon: 'mdi-heart-outline',
       value: false,
-      userRating: 0,
       color: 'pink lighten-1'
     }
   },

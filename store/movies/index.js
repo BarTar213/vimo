@@ -23,5 +23,18 @@ export const actions = {
 
   searchMoviesBackend ({ commit }, title) {
     return this.$backend.movies.searchMovies(title)
+  },
+
+  // ratings
+  async addRatingBackend ({ commit, state }, { movieId, rating }) {
+    return await this.$backend.movies.addRating(movieId, rating)
+  },
+
+  async deleteRatingBackend ({ commit, state }, { movieId }) {
+    return await this.$backend.movies.deleteRating(movieId)
+  },
+
+  async listRatedMoviesBackend ({ commit, state }) {
+    return await this.$backend.movies.listRatedMovies()
   }
 }
