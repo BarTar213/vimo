@@ -26,7 +26,11 @@ export const actions = {
   },
 
   // ratings
-  async getRatingBackend ({ commit, state }, movieId) {
+  async getRatingBackend ({ commit, rootState }, movieId) {
+    if (rootState.auth.user == null) {
+      return false
+    }
+    console.log('blblblbl: ' + rootState.auth.user)
     return await this.$backend.movies.getRating(movieId)
   },
 

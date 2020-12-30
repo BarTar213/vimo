@@ -69,7 +69,7 @@
 
 <script>
 
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Rating',
@@ -88,6 +88,9 @@ export default {
     }
   },
   async fetch () {
+    if (this.user == null) {
+      return
+    }
     const data = await this.getRatingBackend(this.movieId)
     this.userRating = data.rating / 2
   },
@@ -98,6 +101,9 @@ export default {
       userRating: 0,
       color: 'pink lighten-1'
     }
+  },
+  computed: {
+    ...mapState('auth', ['user'])
   },
   watch: {
     liked: {
