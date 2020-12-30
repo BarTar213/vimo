@@ -1,4 +1,8 @@
-import { mapEntityFromBackend } from '@/lib/API/movies/mapping'
+import { mapEntityFromBackend, mapPreviewListFromBackend } from '@/lib/API/movies/mapping'
+
+export const state = () => ({
+  trending: []
+})
 
 export const actions = {
   async getFromBackend ({ commit, state }, id) {
@@ -30,7 +34,6 @@ export const actions = {
     if (rootState.auth.user == null) {
       return false
     }
-    console.log('blblblbl: ' + rootState.auth.user)
     return await this.$backend.movies.getRating(movieId)
   },
 
@@ -44,5 +47,15 @@ export const actions = {
 
   async listRatedMoviesBackend ({ commit, state }) {
     return await this.$backend.movies.listRatedMovies()
+  },
+
+  // trending
+  async listTrendingMoviesBackend ({ commit, state }) {
+    if (state.trending.length > 0) {
+      return state.trending
+    }
+    const trending = await this.$backend.movies.listTrendingMovies()
+    mapPreviewListFromBackend(trending)
+    return trending
   }
 }

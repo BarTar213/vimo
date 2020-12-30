@@ -13,11 +13,11 @@
     <v-col cols="4">
       <p>
         <strong>Budget</strong>
-        <br>{{ movie.budget }}
+        <br>{{ (movie.budget.length>2)?movie.budget:'-' }}
       </p>
       <p>
         <strong>Revenue</strong>
-        <br>{{ movie.revenue }}
+        <br>{{ (movie.revenue.length>2)?movie.revenue:'-' }}
       </p>
     </v-col>
     <v-col cols="4">

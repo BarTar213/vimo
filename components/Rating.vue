@@ -8,7 +8,7 @@
           :size="50"
           color="cyan lighten-3"
         >
-          {{ rating }}
+          {{ rating * 10 }}
         </v-progress-circular>
       </v-col>
       <v-col align-self="center" cols="2">
