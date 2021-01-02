@@ -27,20 +27,19 @@
     <v-spacer />
     <SearchBar />
     <v-spacer />
-    <v-btn icon>
-      <v-icon>mdi-bell</v-icon>
-    </v-btn>
+    <Notification />
     <Account />
   </v-app-bar>
 </template>
 
 <script>
 import Account from '@/components/account/Account'
+import Notification from '@/components/notification/Notification'
 import SearchBar from '~/components/SearchBar'
 
 export default {
   name: 'AppBar',
-  components: { Account, SearchBar },
+  components: { Notification, Account, SearchBar },
   data () {
     return {
       clipped: false,
