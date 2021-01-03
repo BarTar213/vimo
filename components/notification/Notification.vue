@@ -17,9 +17,12 @@
         v-for="(item, index) in notifications"
         :key="item.id"
         :to="item.to"
+        @click="readNotification(item.id, index)"
       >
-        <v-list-item-subtitle> {{ item.message }}</v-list-item-subtitle>
-        <v-list-item-action @click="deleteNotification(item.id, index)">
+        <v-list-item-subtitle :style="(item.read)?'':'font-weight: bolder;'" @click="readNotification(item.id, index)">
+          {{ item.message }}
+        </v-list-item-subtitle>
+        <v-list-item-action>
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" @click="deleteNotification(item.id, index)" v-on="on">
@@ -37,11 +40,14 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Notification',
   async fetch () {
+    if (this.user == null) {
+      return
+    }
     this.notifications = await this.getNotificationListBackend()
   },
   data () {
@@ -50,15 +56,20 @@ export default {
     }
   },
   computed: {
+    ...mapState('auth', ['user']),
     unreadNotificationLength () {
       return this.notifications.filter(item => item.read === false).length
     }
   },
   methods: {
-    ...mapActions('notifications', ['getNotificationListBackend', 'deleteNotificationBackend']),
+    ...mapActions('notifications', ['getNotificationListBackend', 'deleteNotificationBackend', 'readNotificationBackend']),
     deleteNotification (id, index) {
       this.deleteNotificationBackend(id)
       this.notifications.splice(index, 1)
+    },
+    readNotification (id, index) {
+      this.readNotificationBackend({ id, read: true })
+      this.notifications[index].read = true
     }
   }
 }

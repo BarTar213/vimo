@@ -1,7 +1,7 @@
 export const state = () => ({
   user: null,
-  dialog: true,
-  dialogTitle: true
+  dialog: false,
+  dialogTitle: false
 })
 
 export const getters = {
