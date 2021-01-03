@@ -4,7 +4,7 @@
       <v-row justify="center">
         <v-col align-self="center">
           <h1 style="text-align: center">
-            Liked movies
+            Favourites movies
           </h1>
         </v-col>
       </v-row>

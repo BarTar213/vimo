@@ -53,7 +53,7 @@ export default {
   name: 'Account',
   data: () => ({
     loggedItems: [
-      { title: 'Liked', to: '/liked' },
+      { title: 'Favourites', to: '/liked' },
       { title: 'Ratings', to: '/ratings' }
     ],
     notLoggedItems: [

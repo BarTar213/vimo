@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-row justify="start" align="start">
-      <h2>Comments</h2>
+      <h2 id="comments">
+        Comments
+      </h2>
       <CommentInput :movie-id="movieId" @refresh="refreshCommentList" />
     </v-row>
     <v-list three-line>
@@ -11,6 +13,7 @@
           :inset="true"
         />
         <v-list-item
+          :id="`comment${comment.id}`"
           :key="comment.id"
         >
           <Comment :comment="comment" @refresh="refreshCommentList" />
@@ -40,6 +43,9 @@ export default {
   async fetch () {
     this.comments = await this.getCommentListBackend(this.movieId)
     await this.getLikedCommentsListBackend(this.movieId)
+    if (this.$route.hash) {
+      this.$scrollTo(this.$route.hash)
+    }
   },
   data () {
     return {

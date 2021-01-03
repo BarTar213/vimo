@@ -1,6 +1,10 @@
+import { mapListFromBackend } from '@/lib/API/notifications/mapping'
+
 export const actions = {
   async getNotificationListBackend () {
-    return await this.$backend.notifications.listNotifications()
+    const notifications = await this.$backend.notifications.listNotifications()
+    mapListFromBackend(notifications)
+    return notifications
   },
 
   async getNotificationBackend ({ commit, state }, id) {
