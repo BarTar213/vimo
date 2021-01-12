@@ -10,9 +10,10 @@
     hide-details
     item-text="title"
     placeholder="Search movies"
-    prepend-icon="mdi-magnify"
+    prepend-inner-icon="mdi-magnify"
     return-object
     filled
+    rounded
     dense
     @change="itemChange"
   >

@@ -51,13 +51,15 @@ export default {
   },
   data () {
     return {
-      liked: false,
       disliked: false
     }
   },
   computed: {
     ...mapGetters('comments', ['checkLikedComment']),
-    ...mapState('auth', ['user'])
+    ...mapState('auth', ['user']),
+    liked () {
+      return this.checkLikedComment(this.comment.movie_id, this.comment.id)
+    }
   },
   mounted () {
     if (this.user == null) {

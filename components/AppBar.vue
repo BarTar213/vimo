@@ -2,28 +2,44 @@
   <v-app-bar
     :clipped-left="clipped"
     fixed
+    color="blue lighten-5"
     app
   >
-    <v-app-bar-nav-icon @click.stop="updateDrawer" />
-    <v-btn
-      icon
-      @click.stop="miniVariant = !miniVariant"
-    >
-      <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-    </v-btn>
-    <v-btn
-      icon
-      @click.stop="clipped = !clipped"
-    >
-      <v-icon>mdi-application</v-icon>
-    </v-btn>
-    <v-btn
-      icon
-      @click.stop="fixed = !fixed"
-    >
-      <v-icon>mdi-minus</v-icon>
-    </v-btn>
+    <!--    <v-app-bar-nav-icon @click.stop="updateDrawer" />-->
+    <!--    <v-btn-->
+    <!--      icon-->
+    <!--      @click.stop="miniVariant = !miniVariant"-->
+    <!--    >-->
+    <!--      <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>-->
+    <!--    </v-btn>-->
+    <!--    <v-btn-->
+    <!--      icon-->
+    <!--      @click.stop="clipped = !clipped"-->
+    <!--    >-->
+    <!--      <v-icon>mdi-application</v-icon>-->
+    <!--    </v-btn>-->
+    <!--    <v-btn-->
+    <!--      icon-->
+    <!--      @click.stop="fixed = !fixed"-->
+    <!--    >-->
+    <!--      <v-icon>mdi-minus</v-icon>-->
+    <!--    </v-btn>-->
     <v-toolbar-title v-text="title" />
+    <v-tabs
+      align-with-title
+      class="ml-n9"
+      color="grey darken-1"
+      style="max-width: 60%"
+    >
+      <v-tab
+        v-for="link in items"
+        :key="link.title"
+        :to="link.to"
+      >
+        {{ link.title }}
+      </v-tab>
+    </v-tabs>
+
     <v-spacer />
     <SearchBar />
     <v-spacer />
@@ -46,14 +62,19 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
+          icon: 'mdi-home',
           title: 'Home',
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
+          icon: 'mdi-movie',
           title: 'Movies',
           to: '/movies'
+        },
+        {
+          icon: 'mdi-trophy',
+          title: 'Ranking',
+          to: '/ranking'
         }
       ],
       miniVariant: false,
