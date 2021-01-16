@@ -123,8 +123,14 @@ export default {
 }
 
 .poster {
-  width: 100%;
+  width: 100vw;
   max-height: 500px;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-top: -27px !important;
 }
 
 .title{

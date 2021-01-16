@@ -2,7 +2,7 @@
   <v-app-bar
     :clipped-left="clipped"
     fixed
-    color="blue lighten-5"
+    color="#e9fafc"
     app
   >
     <!--    <v-app-bar-nav-icon @click.stop="updateDrawer" />-->
@@ -28,7 +28,7 @@
     <v-tabs
       align-with-title
       class="ml-n9"
-      color="grey darken-1"
+      color="cyan darken-1"
       style="max-width: 60%"
     >
       <v-tab

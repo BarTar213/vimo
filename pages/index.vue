@@ -8,32 +8,19 @@
           </h1>
         </v-col>
       </v-row>
-      <v-slide-group
-        class="pa-4"
-        show-arrows
-      >
-        <v-slide-item
+
+      <v-row>
+        <v-col
           v-for="movie in trending"
           :key="movie.id"
-          v-slot:default="{ active, toggle }"
         >
           <v-card
             class="ma-4"
-            height="280"
-            width="138"
+            height="380"
+            width="220"
             :to="movie.to"
-            @click="toggle"
           >
             <v-img :src="movie.poster_path" />
-            <!--          <v-progress-circular-->
-            <!--            :value="10*movie.vote_average"-->
-            <!--            :width="6"-->
-            <!--            :size="40"-->
-            <!--            color="cyan lighten-3"-->
-            <!--            :style="voteAverageStyle"-->
-            <!--          >-->
-            <!--            {{ movie.vote_average*10 }}-->
-            <!--          </v-progress-circular>-->
             <v-card-title :style="titleStyle">
               {{ movie.title }}
             </v-card-title>
@@ -41,23 +28,9 @@
             <v-card-subtitle :style="subtitleStyle">
               {{ movie.release_date }}
             </v-card-subtitle>
-            <v-row
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
-              <v-scale-transition>
-                <v-icon
-                  v-if="active"
-                  color="white"
-                  size="48"
-                  v-text="'mdi-close-circle-outline'"
-                />
-              </v-scale-transition>
-            </v-row>
           </v-card>
-        </v-slide-item>
-      </v-slide-group>
+        </v-col>
+      </v-row>
     </div>
   </div>
 </template>
@@ -65,9 +38,12 @@
 <script>
 
 export default {
-  components: {
-  },
-  async asyncData ({ params, $axios, store }) {
+  components: {},
+  async asyncData ({
+    params,
+    $axios,
+    store
+  }) {
     const trending = await store.dispatch('movies/listTrendingMoviesBackend')
     return { trending }
   },
