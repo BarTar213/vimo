@@ -1,7 +1,12 @@
-import { mapEntityFromBackend, mapTrendingListFromBackend } from '@/lib/API/movies/mapping'
+import {
+  mapEntityFromBackend,
+  mapPreviewListFromBackend,
+  mapTrendingListFromBackend
+} from '@/lib/API/movies/mapping'
 
 export const state = () => ({
-  trending: []
+  trending: [],
+  ranking: []
 })
 
 export const actions = {
@@ -57,5 +62,15 @@ export const actions = {
     const trending = await this.$backend.movies.listTrendingMovies()
     mapTrendingListFromBackend(trending)
     return trending
+  },
+
+  // ranking
+  async getRankingBackend ({ commit, state }) {
+    if (state.ranking.length > 0) {
+      return state.ranking
+    }
+    const ranking = await this.$backend.movies.getRanking()
+    mapPreviewListFromBackend(ranking)
+    return ranking
   }
 }
