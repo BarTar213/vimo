@@ -51,14 +51,20 @@ export default {
   },
   data () {
     return {
-      disliked: false
+      disliked: false,
+      liked: false
     }
   },
   computed: {
     ...mapGetters('comments', ['checkLikedComment']),
     ...mapState('auth', ['user']),
-    liked () {
-      return this.checkLikedComment(this.comment.movie_id, this.comment.id)
+    currentLiked () {
+      const current = this.checkLikedComment(this.comment.movie_id, this.comment.id)
+      if (current !== this.liked) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.liked = current
+      }
+      return current
     }
   },
   mounted () {
@@ -70,7 +76,7 @@ export default {
   methods: {
     ...mapActions('comments', ['likeCommentBackend', 'deleteCommentBackend', 'getLikedCommentsListBackend']),
     ...mapMutations('auth', ['updateAuthDialog']),
-    like () {
+    async like () {
       if (this.disliked) {
         this.disliked = false
       }
@@ -80,18 +86,17 @@ export default {
         return
       }
 
-      this.likeCommentBackend({
+      await this.likeCommentBackend({
         id: this.comment.id,
         beforeVal: this.liked
-      }).then(() => {
-        this.liked = !this.liked
-        if (this.liked) {
-          this.comment.likes++
-        } else {
-          this.comment.likes--
-        }
-        this.getLikedCommentsListBackend(this.comment.movie_id)
       })
+      this.liked = !this.liked
+      await this.getLikedCommentsListBackend(this.comment.movie_id)
+      if (this.liked) {
+        this.comment.likes++
+      } else {
+        this.comment.likes--
+      }
     },
     dislike () {
       if (this.user == null) {
